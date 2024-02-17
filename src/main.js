@@ -8,6 +8,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector(`.form`);
 const btn = document.querySelector(`.btn`);
+const loader = document.querySelector('.loader');
 
 form.addEventListener(`submit`, event => {
   const inputTrim = input.value.trim();
@@ -20,6 +21,7 @@ form.addEventListener(`submit`, event => {
 
   fetchOn()
     .then(data => {
+      loader.classList.remove('hidden');
       if (data.hits.length <= 0) {
         iziToast.error({
           message:
@@ -28,8 +30,12 @@ form.addEventListener(`submit`, event => {
         });
       }
       render(data);
+      setTimeout(() => {
+        loader.classList.add('hidden');
+      }, 1200);
     })
     .catch(error => console.log(error));
+
   form.reset();
 });
 
